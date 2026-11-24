@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         FacadesRateLimiter::for('bpn-api', function (Request $request) {
             // Maksimal 10 request per menit per IP Address
-            return Limit::perMinute(50)->by($request->ip());
+            return Limit::perMinute(25)->by($request->ip());
         });
     }
 }

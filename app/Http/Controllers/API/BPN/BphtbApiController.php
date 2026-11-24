@@ -45,7 +45,7 @@ class BphtbApiController extends Controller
             $input = $request->all();
         }
         $validator = Validator::make($input, [
-            'NIB' => 'required|string|min_digits:13|max_digits:20',
+            'NIB' => 'required|string|min_digits:13|max_digits:14',
         ]);
 
         if ($validator->fails()) {
