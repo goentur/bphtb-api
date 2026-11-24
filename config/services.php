@@ -23,7 +23,8 @@ return [
     ],
 
     'bpn' => [
-        'key' => env('BPN_API_KEY'),
+        'username' => env('BPN_API_USERNAME'),
+        'password' => env('BPN_API_PASSWORD'),
     ],
 
     'ses' => [
@@ -38,5 +39,4 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
 ];

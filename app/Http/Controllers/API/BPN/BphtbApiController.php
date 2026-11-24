@@ -14,16 +14,13 @@ class BphtbApiController extends Controller
 
     public function index(Request $request)
     {
-        $input = $request->json()->all();
-        if (empty($input)) {
-            $input = $request->all();
-        }
-        $validator = Validator::make($input, [
+        $validator = Validator::make($request->all(), [
             'USERNAME' => 'required|string',
             'PASSWORD' => 'required|string',
-            'NOP' => 'required|digits:18',
-            'NTPD' => 'required|digits:15',
+            'NOP'      => 'required|digits:18',
+            'NTPD'     => 'required|digits:15',
         ]);
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $message = "Data tidak ditemukan";
@@ -41,14 +38,26 @@ class BphtbApiController extends Controller
             ], 200);
         }
 
-        if ($input['USERNAME'] !== 'pusdatinbpn' || $input['PASSWORD'] !== 'pusdatin') {
+        $validUser = (string) config('services.bpn.username');
+        $validPass = (string) config('services.bpn.password');
+
+        // Cocokkan dengan hash_equals() (timing-safe)
+        $isAuthenticated = $validUser !== ''
+            && $validPass !== ''
+            && hash_equals($validUser, $request->input('USERNAME'))
+            && hash_equals($validPass, $request->input('PASSWORD'));
+
+        if (!$isAuthenticated) {
             return response()->json([
                 "respon_code" => "Username atau Password salah"
             ], 200);
         }
 
-        return ApiResponse::make($this->repository->show($validator->validated()));
+        return ApiResponse::make($this->repository->show(
+            $validator->safe()->only(['NOP', 'NTPD'])
+        ));
     }
+
     public function getStatusNIBService(Request $request)
     {
 
