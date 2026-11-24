@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['throttle:bpn-api'])->group(function () {
     Route::controller(BphtbApiController::class)->group(function () {
         Route::post('GetBPHTBService', 'index');
-        Route::post('GetStatusNIBService', 'getStatusNIBService');
+        Route::get('GetStatusNIBService', 'getStatusNIBService');
 
         // Alternative URL
         Route::post('getBPHTBService', 'index');
-        Route::post('getStatusNIBService', 'getStatusNIBService');
+        Route::get('getStatusNIBService', 'getStatusNIBService');
     });
 
     Route::controller(PbbApiController::class)->group(function () {

@@ -19,19 +19,31 @@ class BphtbApiController extends Controller
             $input = $request->all();
         }
         $validator = Validator::make($input, [
+            'USERNAME' => 'required|string|digits:11',
+            'PASSWORD' => 'required|string|digits:8',
             'NOP' => 'required|digits:18',
             'NTPD' => 'required|digits:15',
         ]);
-
         if ($validator->fails()) {
-            $message = "Data tidak ditemukan";
             $errors = $validator->errors();
+            $message = "Data tidak ditemukan";
 
-            if ($errors->has('NOP')) $message = "NOP tidak ditemukan";
-            if ($errors->has('NTPD')) $message = "NTPD tidak ditemukan";
+            if ($errors->has('NOP')) {
+                $message = "NOP tidak ditemukan";
+            } elseif ($errors->has('NTPD')) {
+                $message = "NTPD tidak ditemukan";
+            } elseif ($errors->has('USERNAME') || $errors->has('PASSWORD')) {
+                $message = "Username atau Password tidak valid";
+            }
 
             return response()->json([
                 "respon_code" => $message
+            ], 200);
+        }
+
+        if ($input['USERNAME'] !== 'pusdatinbpn' || $input['PASSWORD'] !== 'pusdatin') {
+            return response()->json([
+                "respon_code" => "Username atau Password salah"
             ], 200);
         }
 
