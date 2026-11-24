@@ -19,8 +19,8 @@ class BphtbApiController extends Controller
             $input = $request->all();
         }
         $validator = Validator::make($input, [
-            'USERNAME' => 'required|string|digits:11',
-            'PASSWORD' => 'required|string|digits:8',
+            'USERNAME' => 'required|string',
+            'PASSWORD' => 'required|string',
             'NOP' => 'required|digits:18',
             'NTPD' => 'required|digits:15',
         ]);
